@@ -1,8 +1,9 @@
-import { AddCommentInput } from "@cookabl/shared";
+import type { AddCommentInput } from "@cookabl/shared";
 import { execute, queryAll } from "../db/client";
-import { Env } from "../env";
+import type { Env } from "../env";
 import { createId } from "../lib/id";
 import { nowIso } from "../lib/now";
+import { assertRecipeAccess } from "./access";
 
 interface CommentRow {
   id: string;
@@ -13,7 +14,9 @@ interface CommentRow {
   updated_at: string;
 }
 
-export const listComments = async (env: Env, recipeId: string): Promise<CommentRow[]> => {
+export const listComments = async (env: Env, recipeId: string, userId: string): Promise<CommentRow[]> => {
+  await assertRecipeAccess(env, recipeId, userId);
+  
   return queryAll<CommentRow>(
     env,
     "SELECT id, recipe_id, user_id, content, created_at, updated_at FROM comments WHERE recipe_id = ? ORDER BY created_at DESC",
@@ -26,6 +29,8 @@ export const addComment = async (
   userId: string,
   input: AddCommentInput,
 ): Promise<CommentRow> => {
+  await assertRecipeAccess(env, input.recipeId, userId);
+  
   const id = createId();
   const now = nowIso();
   await execute(

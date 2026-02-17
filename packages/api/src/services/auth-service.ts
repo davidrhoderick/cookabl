@@ -1,16 +1,17 @@
-import {
+import type {
   AcceptInvitationInput,
   InviteInput,
   LoginInput,
   RegisterInput,
 } from "@cookabl/shared";
 import { execute, queryOne } from "../db/client";
-import { Env } from "../env";
+import type { Env } from "../env";
 import { HttpError } from "../lib/http-error";
 import { createId, createToken } from "../lib/id";
 import { nowIso, plusDaysIso } from "../lib/now";
 import { hashPassword, verifyPassword } from "../lib/password";
 import { sendInvitationEmail, sendWelcomeEmail } from "../email/send";
+import { assertGroupMember } from "./access";
 
 interface UserRow {
   id: string;
@@ -80,6 +81,8 @@ export const invite = async (
   inviter: { id: string; name: string },
   input: InviteInput,
 ): Promise<{ token: string }> => {
+  await assertGroupMember(env, inviter.id, input.groupId);
+  
   const token = createToken();
   const invitationId = createId();
   const createdAt = nowIso();

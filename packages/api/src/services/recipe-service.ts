@@ -1,9 +1,10 @@
-import { PutRecipeInput } from "@cookabl/shared";
+import type { PutRecipeInput } from "@cookabl/shared";
 import { execute, queryAll, queryOne } from "../db/client";
-import { Env } from "../env";
+import type { Env } from "../env";
 import { HttpError } from "../lib/http-error";
 import { createId } from "../lib/id";
 import { nowIso } from "../lib/now";
+import { assertGroupMember, assertRecipeAccess } from "./access";
 
 interface RecipeRow {
   id: string;
@@ -38,7 +39,7 @@ interface CategoryRow {
   name: string;
 }
 
-const assertOwnership = async (env: Env, recipeId: string, userId: string): Promise<void> => {
+export const assertOwnership = async (env: Env, recipeId: string, userId: string): Promise<void> => {
   const owner = await queryOne<{ created_by: string }>(
     env,
     "SELECT created_by FROM recipes WHERE id = ?",
@@ -109,7 +110,11 @@ export const listRecipesForUser = async (env: Env, userId: string) => {
   return loadRecipeDetails(env, recipes);
 };
 
-export const getRecipeById = async (env: Env, recipeId: string) => {
+export const getRecipeById = async (env: Env, recipeId: string, userId?: string) => {
+  if (userId) {
+    await assertRecipeAccess(env, recipeId, userId);
+  }
+  
   const recipe = await queryOne<RecipeRow>(
     env,
     "SELECT id, name, description, image_url, created_by, created_at, updated_at FROM recipes WHERE id = ?",
@@ -134,6 +139,11 @@ export const deleteRecipe = async (env: Env, userId: string, recipeId: string): 
 export const putRecipe = async (env: Env, userId: string, input: PutRecipeInput) => {
   const recipeId = input.id ?? createId();
   const now = nowIso();
+
+  // Check authorization for all groups BEFORE any database writes
+  for (const groupId of input.groupIds) {
+    await assertGroupMember(env, userId, groupId);
+  }
 
   if (input.id) {
     await assertOwnership(env, recipeId, userId);

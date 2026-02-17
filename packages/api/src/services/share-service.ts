@@ -1,8 +1,10 @@
-import { UpdateShareInput } from "@cookabl/shared";
+import type { UpdateShareInput } from "@cookabl/shared";
 import { execute, queryAll, queryOne } from "../db/client";
-import { Env } from "../env";
+import type { Env } from "../env";
 import { createId, createToken } from "../lib/id";
 import { nowIso } from "../lib/now";
+import { assertOwnership } from "./recipe-service";
+import { assertRecipeAccess } from "./access";
 
 interface ShareRow {
   id: string;
@@ -20,7 +22,9 @@ interface ShareAccessResult {
   recipeId: string;
 }
 
-export const listRecipeShares = async (env: Env, recipeId: string): Promise<ShareRow[]> => {
+export const listRecipeShares = async (env: Env, recipeId: string, userId: string): Promise<ShareRow[]> => {
+  await assertRecipeAccess(env, recipeId, userId);
+  
   return queryAll<ShareRow>(
     env,
     "SELECT id, recipe_id, share_token, access_type, max_views, current_views, expires_at, created_by, created_at FROM recipe_shares WHERE recipe_id = ? ORDER BY created_at DESC",
@@ -33,6 +37,8 @@ export const updateShare = async (
   userId: string,
   input: UpdateShareInput,
 ): Promise<ShareRow> => {
+  await assertOwnership(env, input.recipeId, userId);
+  
   const existing = await queryOne<ShareRow>(
     env,
     "SELECT id, recipe_id, share_token, access_type, max_views, current_views, expires_at, created_by, created_at FROM recipe_shares WHERE recipe_id = ?",

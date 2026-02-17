@@ -1,11 +1,11 @@
-import {
+import type {
   addCommentSchema,
   inviteSchema,
   putRecipeSchema,
   updateShareSchema,
   uploadRequestSchema,
 } from "@cookabl/shared";
-import { GraphQLContext } from "./context";
+import type { GraphQLContext } from "./context";
 import { mapComment, mapGroup, mapRecipe, mapShare } from "./mappers";
 import { addComment, listComments } from "../services/comment-service";
 import { listUserGroups, listUsersInUserGroups, createGroup } from "../services/group-service";
@@ -47,13 +47,13 @@ export const resolvers = {
       return listUsersInUserGroups(ctx.env, user.id);
     },
     comments: async (_: unknown, args: { recipeId: string }, ctx: GraphQLContext) => {
-      assertUser(ctx);
-      const comments = await listComments(ctx.env, args.recipeId);
+      const user = assertUser(ctx);
+      const comments = await listComments(ctx.env, args.recipeId, user.id);
       return comments.map(mapComment);
     },
     recipeShares: async (_: unknown, args: { recipeId: string }, ctx: GraphQLContext) => {
-      assertUser(ctx);
-      const shares = await listRecipeShares(ctx.env, args.recipeId);
+      const user = assertUser(ctx);
+      const shares = await listRecipeShares(ctx.env, args.recipeId, user.id);
       return shares.map(mapShare);
     },
   },
