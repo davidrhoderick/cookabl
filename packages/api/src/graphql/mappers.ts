@@ -21,6 +21,7 @@ export const mapRecipe = (recipe: {
   created_at: string;
   updated_at: string;
   group_ids: string[];
+  categories: string[];
   ingredients: {
     id: string;
     name: string;
@@ -43,6 +44,7 @@ export const mapRecipe = (recipe: {
   createdAt: recipe.created_at,
   updatedAt: recipe.updated_at,
   groupIds: recipe.group_ids,
+  categories: recipe.categories,
   ingredients: recipe.ingredients.map((ingredient) => ({
     id: ingredient.id,
     name: ingredient.name,

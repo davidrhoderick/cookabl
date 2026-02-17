@@ -7,6 +7,7 @@ export const SHARED_RECIPE_QUERY = gql`
       name
       description
       imageUrl
+      categories
       ingredients {
         id
         name

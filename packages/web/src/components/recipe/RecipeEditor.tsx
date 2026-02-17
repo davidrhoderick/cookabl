@@ -10,6 +10,7 @@ const recipeFormSchema = z.object({
   name: z.string().min(1),
   description: z.string().optional(),
   groupId: z.string().min(1),
+  categoriesText: z.string().optional(),
   ingredientName: z.string().min(1),
   ingredientQuantity: z.coerce.number().positive(),
   ingredientUnit: z.string().min(1),
@@ -51,6 +52,7 @@ export const RecipeEditor = ({ groups, selectedRecipe, onSubmit }: RecipeEditorP
         name: "",
         description: "",
         groupId: groups[0]?.id ?? "",
+        categoriesText: "",
         ingredientName: "",
         ingredientQuantity: 0,
         ingredientUnit: "g",
@@ -63,6 +65,7 @@ export const RecipeEditor = ({ groups, selectedRecipe, onSubmit }: RecipeEditorP
       name: selectedRecipe.name,
       description: selectedRecipe.description ?? "",
       groupId: selectedRecipe.groupIds[0] ?? groups[0]?.id ?? "",
+      categoriesText: selectedRecipe.categories?.join(", ") ?? "",
       ingredientName: selectedRecipe.ingredients[0]?.name ?? "",
       ingredientQuantity: selectedRecipe.ingredients[0]?.quantity ?? 0,
       ingredientUnit: selectedRecipe.ingredients[0]?.unit ?? "g",
@@ -81,6 +84,8 @@ export const RecipeEditor = ({ groups, selectedRecipe, onSubmit }: RecipeEditorP
       {errors.name && <p className="text-xs text-red-600">{errors.name.message}</p>}
 
       <Input placeholder="Description" {...register("description")} />
+
+      <Input placeholder="Categories (comma-separated)" {...register("categoriesText")} />
 
       <select className="w-full rounded-xl border border-[var(--line)] bg-transparent px-3 py-2" {...register("groupId")}>
         {groups.map((group) => (

@@ -37,6 +37,7 @@ export const typeDefs = /* GraphQL */ `
     createdAt: String!
     updatedAt: String!
     groupIds: [String!]!
+    categories: [String!]!
     ingredients: [RecipeIngredient!]!
     steps: [RecipeStep!]!
   }
@@ -90,6 +91,7 @@ export const typeDefs = /* GraphQL */ `
     description: String
     imageUrl: String
     groupIds: [String!]!
+    categories: [String!]
     ingredients: [RecipeIngredientInput!]!
     steps: [RecipeStepInput!]!
   }

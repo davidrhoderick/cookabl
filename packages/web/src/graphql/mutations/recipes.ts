@@ -9,6 +9,7 @@ export const PUT_RECIPE_MUTATION = gql`
       imageUrl
       updatedAt
       groupIds
+      categories
       ingredients {
         id
         name

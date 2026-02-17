@@ -133,6 +133,38 @@ describe("putRecipeSchema", () => {
     });
     expect(result.success).toBe(false);
   });
+
+  it("accepts recipe with categories", () => {
+    const result = putRecipeSchema.safeParse({
+      ...validRecipe,
+      categories: ["Italian", "Quick meals"],
+    });
+    expect(result.success).toBe(true);
+  });
+
+  it("defaults categories to empty array when omitted", () => {
+    const result = putRecipeSchema.safeParse(validRecipe);
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.categories).toEqual([]);
+    }
+  });
+
+  it("rejects category with empty string", () => {
+    const result = putRecipeSchema.safeParse({
+      ...validRecipe,
+      categories: [""],
+    });
+    expect(result.success).toBe(false);
+  });
+
+  it("rejects category exceeding 60 characters", () => {
+    const result = putRecipeSchema.safeParse({
+      ...validRecipe,
+      categories: ["a".repeat(61)],
+    });
+    expect(result.success).toBe(false);
+  });
 });
 
 describe("addCommentSchema", () => {

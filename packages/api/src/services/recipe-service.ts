@@ -32,6 +32,12 @@ interface StepRow {
   instruction: string;
 }
 
+interface CategoryRow {
+  id: string;
+  recipe_id: string;
+  name: string;
+}
+
 const assertOwnership = async (env: Env, recipeId: string, userId: string): Promise<void> => {
   const owner = await queryOne<{ created_by: string }>(
     env,
@@ -69,6 +75,12 @@ const loadRecipeDetails = async (env: Env, rows: RecipeRow[]) => {
     recipeIds,
   );
 
+  const categories = await queryAll<CategoryRow>(
+    env,
+    `SELECT id, recipe_id, name FROM recipe_categories WHERE recipe_id IN (${placeholders}) ORDER BY name ASC`,
+    recipeIds,
+  );
+
   return rows.map((row) => ({
     ...row,
     ingredients: ingredients.filter((ingredient) => ingredient.recipe_id === row.id),
@@ -76,6 +88,9 @@ const loadRecipeDetails = async (env: Env, rows: RecipeRow[]) => {
     group_ids: recipeGroups
       .filter((groupRef) => groupRef.recipe_id === row.id)
       .map((groupRef) => groupRef.group_id),
+    categories: categories
+      .filter((cat) => cat.recipe_id === row.id)
+      .map((cat) => cat.name),
   }));
 };
 
@@ -131,6 +146,7 @@ export const putRecipe = async (env: Env, userId: string, input: PutRecipeInput)
     await execute(env, "DELETE FROM recipe_ingredients WHERE recipe_id = ?", [recipeId]);
     await execute(env, "DELETE FROM recipe_steps WHERE recipe_id = ?", [recipeId]);
     await execute(env, "DELETE FROM recipe_groups WHERE recipe_id = ?", [recipeId]);
+    await execute(env, "DELETE FROM recipe_categories WHERE recipe_id = ?", [recipeId]);
   } else {
     await execute(
       env,
@@ -160,6 +176,14 @@ export const putRecipe = async (env: Env, userId: string, input: PutRecipeInput)
       env,
       "INSERT INTO recipe_groups (id, recipe_id, group_id, added_by, added_at) VALUES (?, ?, ?, ?, ?)",
       [createId(), recipeId, groupId, userId, now],
+    );
+  }
+
+  for (const category of input.categories) {
+    await execute(
+      env,
+      "INSERT INTO recipe_categories (id, recipe_id, name) VALUES (?, ?, ?)",
+      [createId(), recipeId, category],
     );
   }
 

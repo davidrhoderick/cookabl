@@ -41,6 +41,7 @@ export const putRecipeSchema = z.object({
   description: z.string().max(2000).optional(),
   imageUrl: z.string().url().optional(),
   groupIds: z.array(z.string().min(1)).min(1),
+  categories: z.array(z.string().min(1).max(60)).optional().default([]),
   ingredients: z.array(recipeIngredientSchema).min(1),
   steps: z.array(recipeStepSchema).min(1),
 });

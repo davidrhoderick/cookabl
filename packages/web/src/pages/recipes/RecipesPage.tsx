@@ -32,6 +32,7 @@ export const RecipesPage = () => {
       name: string;
       description?: string;
       groupId: string;
+      categoriesText?: string;
       ingredientName: string;
       ingredientQuantity: number;
       ingredientUnit: string;
@@ -48,6 +49,11 @@ export const RecipesPage = () => {
         instruction,
       }));
 
+    const categories = (values.categoriesText ?? "")
+      .split(",")
+      .map((c) => c.trim())
+      .filter(Boolean);
+
     await putRecipe({
       variables: {
         input: {
@@ -55,6 +61,7 @@ export const RecipesPage = () => {
           name: values.name,
           description: values.description,
           groupIds: [values.groupId],
+          categories,
           ingredients: [
             {
               name: values.ingredientName,

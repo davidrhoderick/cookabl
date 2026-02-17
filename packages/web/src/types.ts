@@ -28,6 +28,7 @@ export interface RecipeView {
   createdAt: string;
   updatedAt: string;
   groupIds: string[];
+  categories: string[];
   ingredients: RecipeIngredientView[];
   steps: RecipeStepView[];
 }

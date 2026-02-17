@@ -48,6 +48,18 @@ export const RecipeCard = ({
         <div>
           <h3 className="font-semibold">{recipe.name}</h3>
           <p className="text-sm text-[var(--muted)]">{recipe.description || "No description"}</p>
+          {recipe.categories.length > 0 && (
+            <div className="mt-1 flex flex-wrap gap-1">
+              {recipe.categories.map((category) => (
+                <span
+                  key={category}
+                  className="inline-block rounded-full bg-[var(--line)] px-2 py-0.5 text-xs text-[var(--muted)]"
+                >
+                  {category}
+                </span>
+              ))}
+            </div>
+          )}
         </div>
         <div className="flex gap-2">
           <Button aria-label={`Edit ${recipe.name}`} onClick={() => onEdit(recipe)} type="button" variant="ghost">

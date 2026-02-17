@@ -11,6 +11,7 @@ export const RECIPES_QUERY = gql`
       createdAt
       updatedAt
       groupIds
+      categories
       ingredients {
         id
         name

@@ -89,6 +89,12 @@ export const recipeShares = sqliteTable("recipe_shares", {
   createdAt: text("created_at").notNull(),
 });
 
+export const recipeCategories = sqliteTable("recipe_categories", {
+  id: text("id").primaryKey(),
+  recipeId: text("recipe_id").notNull(),
+  name: text("name").notNull(),
+});
+
 export const invitations = sqliteTable("invitations", {
   id: text("id").primaryKey(),
   email: text("email").notNull(),

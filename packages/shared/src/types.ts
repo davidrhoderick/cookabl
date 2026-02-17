@@ -58,6 +58,7 @@ export interface Recipe {
   ingredients: RecipeIngredient[];
   steps: RecipeStep[];
   groupIds: string[];
+  categories: string[];
 }
 
 export interface Comment {
