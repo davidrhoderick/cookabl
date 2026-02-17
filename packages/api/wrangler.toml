@@ -1,0 +1,13 @@
+name = "cookabl-api"
+main = "src/index.ts"
+compatibility_date = "2025-02-15"
+compatibility_flags = ["nodejs_compat"]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "cookabl"
+database_id = "local-cookabl"
+
+[[r2_buckets]]
+binding = "RECIPE_ASSETS"
+bucket_name = "cookabl-recipe-assets"

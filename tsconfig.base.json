@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "baseUrl": ".",
+    "paths": {
+      "@cookabl/shared": ["packages/shared/src/index.ts"],
+      "@cookabl/shared/*": ["packages/shared/src/*"],
+      "@cookabl/email": ["packages/email/src/index.ts"],
+      "@cookabl/web/*": ["packages/web/src/*"],
+      "@cookabl/api/*": ["packages/api/src/*"]
+    },
+    "strict": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "types": []
+  }
+}

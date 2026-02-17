@@ -1,0 +1,29 @@
+{
+  "name": "cookabl",
+  "version": "1.0.0",
+  "description": "Family-/group-based recipe web app for sharing, and protecting, family/group recipes",
+  "license": "ISC",
+  "author": "David Rhoderick",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev:api & npm run dev:web",
+    "dev:api": "npm run dev --workspace=@cookabl/api",
+    "dev:web": "npm run dev --workspace=@cookabl/web",
+    "build": "npm run build --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "test": "vitest",
+    "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
+    "format": "prettier --write ."
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "eslint": "^8.57.0",
+    "prettier": "^3.2.0",
+    "typescript": "^5.3.0",
+    "vitest": "^1.0.0"
+  }
+}
