@@ -63,6 +63,11 @@ export const typeDefs = /* GraphQL */ `
     createdAt: String!
   }
 
+  type PopularTerm {
+    term: String!
+    count: Int!
+  }
+
   type InvitePayload {
     token: String!
   }
@@ -108,6 +113,13 @@ export const typeDefs = /* GraphQL */ `
     expiresAt: String
   }
 
+  input SearchFiltersInput {
+    categories: [String!]
+    groupIds: [String!]
+    maxResults: Int
+    offset: Int
+  }
+
   input InviteInput {
     email: String!
     groupId: ID!
@@ -115,6 +127,10 @@ export const typeDefs = /* GraphQL */ `
 
   type Query {
     recipes: [Recipe!]!
+    searchRecipes(query: String!, filters: SearchFiltersInput): [Recipe!]!
+    searchSuggestions(partial: String!): [String!]!
+    similarRecipes(recipeId: ID!): [Recipe!]!
+    popularSearchTerms(maxTerms: Int): [PopularTerm!]!
     sharedRecipe(token: String!): Recipe
     groups: [Group!]!
     users: [User!]!

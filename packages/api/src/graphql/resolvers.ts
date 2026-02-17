@@ -1,4 +1,4 @@
-import type {
+import {
   addCommentSchema,
   inviteSchema,
   putRecipeSchema,
@@ -12,6 +12,7 @@ import { listUserGroups, listUsersInUserGroups, createGroup } from "../services/
 import { deleteRecipe, getRecipeById, listRecipesForUser, putRecipe } from "../services/recipe-service";
 import { consumeShareToken, createUploadUrl, listRecipeShares, updateShare } from "../services/share-service";
 import { invite } from "../services/auth-service";
+import { searchRecipes, getSearchSuggestions, getSimilarRecipes, getPopularSearchTerms } from "../services/search-service";
 
 const assertUser = (ctx: GraphQLContext) => {
   if (!ctx.user) {
@@ -27,6 +28,24 @@ export const resolvers = {
       const user = assertUser(ctx);
       const recipes = await listRecipesForUser(ctx.env, user.id);
       return recipes.map(mapRecipe);
+    },
+    searchRecipes: async (_: unknown, args: { query: string; filters?: any }, ctx: GraphQLContext) => {
+      const user = assertUser(ctx);
+      const searchResults = await searchRecipes(ctx.env, user.id, args.query, args.filters || {});
+      return searchResults; // SearchResult already has correct GraphQL format
+    },
+    searchSuggestions: async (_: unknown, args: { partial: string }, ctx: GraphQLContext) => {
+      const user = assertUser(ctx);
+      return getSearchSuggestions(ctx.env, user.id, args.partial);
+    },
+    similarRecipes: async (_: unknown, args: { recipeId: string }, ctx: GraphQLContext) => {
+      const user = assertUser(ctx);
+      const similarResults = await getSimilarRecipes(ctx.env, user.id, args.recipeId);
+      return similarResults; // SearchResult already has correct GraphQL format
+    },
+    popularSearchTerms: async (_: unknown, args: { maxTerms?: number }, ctx: GraphQLContext) => {
+      const user = assertUser(ctx);
+      return getPopularSearchTerms(ctx.env, user.id, args.maxTerms || 10);
     },
     sharedRecipe: async (_: unknown, args: { token: string }, ctx: GraphQLContext) => {
       const access = await consumeShareToken(ctx.env, args.token);

@@ -1,5 +1,16 @@
 import { integer, real, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
+// FTS5 virtual table for recipe search - this will be created with custom SQL
+export const recipeSearchFts = sqliteTable("recipe_search_fts", {
+  recipeId: text("recipe_id").notNull(),
+  name: text("name").notNull(),
+  description: text("description"),
+  ingredients: text("ingredients").notNull(),
+  instructions: text("instructions").notNull(),
+  categories: text("categories").notNull(),
+  groupIds: text("group_ids").notNull(), // Comma-separated group IDs for access control
+});
+
 export const users = sqliteTable("users", {
   id: text("id").primaryKey(),
   email: text("email").notNull().unique(),

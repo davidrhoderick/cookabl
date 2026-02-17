@@ -95,6 +95,8 @@ const loadRecipeDetails = async (env: Env, rows: RecipeRow[]) => {
   }));
 };
 
+export { loadRecipeDetails };
+
 export const listRecipesForUser = async (env: Env, userId: string) => {
   const recipes = await queryAll<RecipeRow>(
     env,
