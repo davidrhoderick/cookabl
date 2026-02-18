@@ -4,9 +4,7 @@ import { createId, createToken } from "./id";
 describe("createId", () => {
   it("returns a valid UUID string", () => {
     const id = createId();
-    expect(id).toMatch(
-      /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/,
-    );
+    expect(id).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/);
   });
 
   it("returns unique values", () => {

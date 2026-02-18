@@ -24,7 +24,9 @@ export const SharedRecipePage = () => {
 
   const recipe = data?.sharedRecipe;
   if (!recipe) {
-    return <div className="p-6 text-sm text-[var(--muted)]">Shared recipe not found or expired.</div>;
+    return (
+      <div className="p-6 text-sm text-[var(--muted)]">Shared recipe not found or expired.</div>
+    );
   }
 
   return (
@@ -36,7 +38,9 @@ export const SharedRecipePage = () => {
         <h2 className="mb-2 text-lg font-medium">Ingredients</h2>
         <ul className="mb-4 list-disc space-y-1 pl-5 text-sm">
           {recipe.ingredients.map((ingredient) => (
-            <li key={ingredient.id}>{ingredient.quantity} {ingredient.unit} {ingredient.name}</li>
+            <li key={ingredient.id}>
+              {ingredient.quantity} {ingredient.unit} {ingredient.name}
+            </li>
           ))}
         </ul>
 

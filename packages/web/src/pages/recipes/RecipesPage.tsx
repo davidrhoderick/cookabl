@@ -3,7 +3,12 @@ import { useQuery } from "@apollo/client";
 import { EmptyState } from "../../components/ui/EmptyState";
 import { GROUPS_QUERY } from "../../graphql/queries/groups";
 import { SEARCH_RECIPES_QUERY } from "../../graphql/queries/search";
-import { useRecipeComments, useRecipeMutations, useRecipeShares, useRecipes } from "../../hooks/useRecipe";
+import {
+  useRecipeComments,
+  useRecipeMutations,
+  useRecipeShares,
+  useRecipes,
+} from "../../hooks/useRecipe";
 import { GroupView, RecipeView } from "../../types";
 import { RecipeCard } from "../../components/recipe/RecipeCard";
 import { RecipeEditor } from "../../components/recipe/RecipeEditor";
@@ -19,7 +24,7 @@ export const RecipesPage = () => {
   const { putRecipe, deleteRecipe, addComment, updateShare } = useRecipeMutations();
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [unitSystem, setUnitSystem] = useState<"metric" | "imperial">("metric");
-  
+
   // Search state
   const [isSearchMode, setIsSearchMode] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -166,9 +171,7 @@ export const RecipesPage = () => {
     <div className="grid gap-4 lg:grid-cols-[1.1fr_1fr]">
       <section className="space-y-3">
         <div className="flex items-center justify-between">
-          <h1 className="text-xl font-semibold">
-            {isSearchMode ? "Search Results" : "Recipes"}
-          </h1>
+          <h1 className="text-xl font-semibold">{isSearchMode ? "Search Results" : "Recipes"}</h1>
           <div className="flex items-center gap-2">
             {isSearchMode && (
               <button
@@ -185,7 +188,9 @@ export const RecipesPage = () => {
             )}
             <button
               className="rounded-full border border-[var(--line)] px-3 py-1.5 text-sm"
-              onClick={() => setUnitSystem((current) => (current === "metric" ? "imperial" : "metric"))}
+              onClick={() =>
+                setUnitSystem((current) => (current === "metric" ? "imperial" : "metric"))
+              }
               type="button"
             >
               {unitSystem === "metric" ? "Show imperial" : "Show metric"}
@@ -204,10 +209,7 @@ export const RecipesPage = () => {
         {isSearchMode && (
           <div className="border border-[var(--line)] rounded-lg p-4">
             <h3 className="text-sm font-medium text-[var(--foreground)] mb-3">Filters</h3>
-            <SearchFilters
-              onFiltersChange={handleFiltersChange}
-              initialFilters={searchFilters}
-            />
+            <SearchFilters onFiltersChange={handleFiltersChange} initialFilters={searchFilters} />
           </div>
         )}
 
@@ -226,7 +228,10 @@ export const RecipesPage = () => {
           <>
             {loading && <p className="text-sm text-[var(--muted)]">Loading recipes...</p>}
             {!loading && recipes.length === 0 && (
-              <EmptyState title="No recipes yet" description="Create your first group recipe on the right." />
+              <EmptyState
+                title="No recipes yet"
+                description="Create your first group recipe on the right."
+              />
             )}
 
             <div className="grid gap-3 md:grid-cols-2">

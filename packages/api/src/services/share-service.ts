@@ -22,9 +22,13 @@ interface ShareAccessResult {
   recipeId: string;
 }
 
-export const listRecipeShares = async (env: Env, recipeId: string, userId: string): Promise<ShareRow[]> => {
+export const listRecipeShares = async (
+  env: Env,
+  recipeId: string,
+  userId: string,
+): Promise<ShareRow[]> => {
   await assertRecipeAccess(env, recipeId, userId);
-  
+
   return queryAll<ShareRow>(
     env,
     "SELECT id, recipe_id, share_token, access_type, max_views, current_views, expires_at, created_by, created_at FROM recipe_shares WHERE recipe_id = ? ORDER BY created_at DESC",
@@ -38,7 +42,7 @@ export const updateShare = async (
   input: UpdateShareInput,
 ): Promise<ShareRow> => {
   await assertOwnership(env, input.recipeId, userId);
-  
+
   const existing = await queryOne<ShareRow>(
     env,
     "SELECT id, recipe_id, share_token, access_type, max_views, current_views, expires_at, created_by, created_at FROM recipe_shares WHERE recipe_id = ?",
@@ -68,7 +72,17 @@ export const updateShare = async (
   await execute(
     env,
     "INSERT INTO recipe_shares (id, recipe_id, share_token, access_type, max_views, current_views, expires_at, created_by, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-    [id, input.recipeId, shareToken, input.accessType, input.maxViews ?? null, 0, input.expiresAt ?? null, userId, now],
+    [
+      id,
+      input.recipeId,
+      shareToken,
+      input.accessType,
+      input.maxViews ?? null,
+      0,
+      input.expiresAt ?? null,
+      userId,
+      now,
+    ],
   );
 
   return {
@@ -118,7 +132,9 @@ export const consumeShareToken = async (
     return null;
   }
 
-  await execute(env, "UPDATE recipe_shares SET current_views = current_views + 1 WHERE id = ?", [share.id]);
+  await execute(env, "UPDATE recipe_shares SET current_views = current_views + 1 WHERE id = ?", [
+    share.id,
+  ]);
 
   return {
     recipeId: share.recipe_id,

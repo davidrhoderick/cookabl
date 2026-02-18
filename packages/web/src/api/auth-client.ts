@@ -16,8 +16,7 @@ const request = async <T>(path: string, init?: RequestInit): Promise<T> => {
 
   const payload = await response.json().catch(() => undefined);
   if (!response.ok) {
-    const message =
-      payload && typeof payload.error === "string" ? payload.error : "Request failed";
+    const message = payload && typeof payload.error === "string" ? payload.error : "Request failed";
     throw new Error(message);
   }
 

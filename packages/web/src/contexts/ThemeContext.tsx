@@ -25,8 +25,7 @@ export const ThemeProvider = ({ children }: PropsWithChildren) => {
   const value = useMemo(
     () => ({
       theme,
-      toggleTheme: () =>
-        setTheme((current: Theme) => (current === "light" ? "dark" : "light")),
+      toggleTheme: () => setTheme((current: Theme) => (current === "light" ? "dark" : "light")),
     }),
     [theme],
   );

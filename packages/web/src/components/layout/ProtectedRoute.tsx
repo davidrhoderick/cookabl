@@ -7,7 +7,10 @@ export const ProtectedRoute = ({ children }: PropsWithChildren) => {
 
   if (isLoading) {
     return (
-      <output aria-live="polite" className="flex min-h-screen items-center justify-center text-sm text-[var(--muted)]">
+      <output
+        aria-live="polite"
+        className="flex min-h-screen items-center justify-center text-sm text-[var(--muted)]"
+      >
         Loading…
       </output>
     );

@@ -14,9 +14,13 @@ interface CommentRow {
   updated_at: string;
 }
 
-export const listComments = async (env: Env, recipeId: string, userId: string): Promise<CommentRow[]> => {
+export const listComments = async (
+  env: Env,
+  recipeId: string,
+  userId: string,
+): Promise<CommentRow[]> => {
   await assertRecipeAccess(env, recipeId, userId);
-  
+
   return queryAll<CommentRow>(
     env,
     "SELECT id, recipe_id, user_id, content, created_at, updated_at FROM comments WHERE recipe_id = ? ORDER BY created_at DESC",
@@ -30,7 +34,7 @@ export const addComment = async (
   input: AddCommentInput,
 ): Promise<CommentRow> => {
   await assertRecipeAccess(env, input.recipeId, userId);
-  
+
   const id = createId();
   const now = nowIso();
   await execute(

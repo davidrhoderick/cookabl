@@ -38,7 +38,10 @@ export const SharePanel = ({ shareToken, onUpdate }: SharePanelProps) => {
           await onUpdate(values);
         })}
       >
-        <select className="w-full rounded-xl border border-[var(--line)] bg-transparent px-3 py-2" {...register("accessType")}>
+        <select
+          className="w-full rounded-xl border border-[var(--line)] bg-transparent px-3 py-2"
+          {...register("accessType")}
+        >
           <option value="public">Public</option>
           <option value="inviteOnly">Invite only</option>
         </select>

@@ -9,10 +9,25 @@ import type { GraphQLContext } from "./context";
 import { mapComment, mapGroup, mapRecipe, mapShare } from "./mappers";
 import { addComment, listComments } from "../services/comment-service";
 import { listUserGroups, listUsersInUserGroups, createGroup } from "../services/group-service";
-import { deleteRecipe, getRecipeById, listRecipesForUser, putRecipe } from "../services/recipe-service";
-import { consumeShareToken, createUploadUrl, listRecipeShares, updateShare } from "../services/share-service";
+import {
+  deleteRecipe,
+  getRecipeById,
+  listRecipesForUser,
+  putRecipe,
+} from "../services/recipe-service";
+import {
+  consumeShareToken,
+  createUploadUrl,
+  listRecipeShares,
+  updateShare,
+} from "../services/share-service";
 import { invite } from "../services/auth-service";
-import { searchRecipes, getSearchSuggestions, getSimilarRecipes, getPopularSearchTerms } from "../services/search-service";
+import {
+  searchRecipes,
+  getSearchSuggestions,
+  getSimilarRecipes,
+  getPopularSearchTerms,
+} from "../services/search-service";
 
 const assertUser = (ctx: GraphQLContext) => {
   if (!ctx.user) {
@@ -29,7 +44,11 @@ export const resolvers = {
       const recipes = await listRecipesForUser(ctx.env, user.id);
       return recipes.map(mapRecipe);
     },
-    searchRecipes: async (_: unknown, args: { query: string; filters?: any }, ctx: GraphQLContext) => {
+    searchRecipes: async (
+      _: unknown,
+      args: { query: string; filters?: any },
+      ctx: GraphQLContext,
+    ) => {
       const user = assertUser(ctx);
       const searchResults = await searchRecipes(ctx.env, user.id, args.query, args.filters || {});
       return searchResults; // SearchResult already has correct GraphQL format

@@ -40,7 +40,11 @@ const normalizeEmail = (email: string): string => email.trim().toLowerCase();
 
 export const register = async (env: Env, input: RegisterInput): Promise<AuthResult> => {
   const email = normalizeEmail(input.email);
-  const existing = await queryOne<UserRow>(env, "SELECT id, email, password_hash, name FROM users WHERE email = ?", [email]);
+  const existing = await queryOne<UserRow>(
+    env,
+    "SELECT id, email, password_hash, name FROM users WHERE email = ?",
+    [email],
+  );
   if (existing) {
     throw new HttpError(409, "Email already registered");
   }
@@ -64,7 +68,11 @@ export const register = async (env: Env, input: RegisterInput): Promise<AuthResu
 
 export const login = async (env: Env, input: LoginInput): Promise<AuthResult> => {
   const email = normalizeEmail(input.email);
-  const user = await queryOne<UserRow>(env, "SELECT id, email, password_hash, name FROM users WHERE email = ?", [email]);
+  const user = await queryOne<UserRow>(
+    env,
+    "SELECT id, email, password_hash, name FROM users WHERE email = ?",
+    [email],
+  );
   if (!user || !(await verifyPassword(input.password, user.password_hash))) {
     throw new HttpError(401, "Invalid credentials");
   }
@@ -82,7 +90,7 @@ export const invite = async (
   input: InviteInput,
 ): Promise<{ token: string }> => {
   await assertGroupMember(env, inviter.id, input.groupId);
-  
+
   const token = createToken();
   const invitationId = createId();
   const createdAt = nowIso();
@@ -113,11 +121,19 @@ export const acceptInvitation = async (
     [input.token],
   );
 
-  if (!invitation || invitation.accepted_at || new Date(invitation.expires_at).valueOf() <= Date.now()) {
+  if (
+    !invitation ||
+    invitation.accepted_at ||
+    new Date(invitation.expires_at).valueOf() <= Date.now()
+  ) {
     throw new HttpError(400, "Invitation is invalid or expired");
   }
 
-  let user = await queryOne<UserRow>(env, "SELECT id, email, password_hash, name FROM users WHERE email = ?", [invitation.email]);
+  let user = await queryOne<UserRow>(
+    env,
+    "SELECT id, email, password_hash, name FROM users WHERE email = ?",
+    [invitation.email],
+  );
   const now = nowIso();
 
   if (!user) {

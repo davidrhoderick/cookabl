@@ -1,5 +1,11 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
-import { putRecipe, assertOwnership, listRecipesForUser, getRecipeById, deleteRecipe } from "./recipe-service";
+import {
+  putRecipe,
+  assertOwnership,
+  listRecipesForUser,
+  getRecipeById,
+  deleteRecipe,
+} from "./recipe-service";
 import { execute, queryAll, queryOne } from "../db/client";
 import { HttpError } from "../lib/http-error";
 import { assertGroupMember, assertRecipeAccess } from "./access";
@@ -192,16 +198,20 @@ describe("recipe-service access patterns", () => {
       ];
 
       vi.mocked(queryAll).mockResolvedValueOnce(mockRecipes); // Main query
-      vi.mocked(queryAll).mockResolvedValueOnce([ // Ingredients query
+      vi.mocked(queryAll).mockResolvedValueOnce([
+        // Ingredients query
         { id: "ing-1", recipe_id: "recipe-1", name: "Pasta", quantity: 200, unit: "g" },
       ]);
-      vi.mocked(queryAll).mockResolvedValueOnce([ // Steps query
+      vi.mocked(queryAll).mockResolvedValueOnce([
+        // Steps query
         { id: "step-1", recipe_id: "recipe-1", step_number: 1, instruction: "Boil water" },
       ]);
-      vi.mocked(queryAll).mockResolvedValueOnce([ // Groups query
+      vi.mocked(queryAll).mockResolvedValueOnce([
+        // Groups query
         { recipe_id: "recipe-1", group_id: "group-1" },
       ]);
-      vi.mocked(queryAll).mockResolvedValueOnce([ // Categories query
+      vi.mocked(queryAll).mockResolvedValueOnce([
+        // Categories query
         { id: "cat-1", recipe_id: "recipe-1", name: "Italian" },
       ]);
 
@@ -210,7 +220,9 @@ describe("recipe-service access patterns", () => {
       expect(result).toHaveLength(1);
       expect(result[0]).toEqual({
         ...mockRecipes[0],
-        ingredients: [{ id: "ing-1", recipe_id: "recipe-1", name: "Pasta", quantity: 200, unit: "g" }],
+        ingredients: [
+          { id: "ing-1", recipe_id: "recipe-1", name: "Pasta", quantity: 200, unit: "g" },
+        ],
         steps: [{ id: "step-1", recipe_id: "recipe-1", step_number: 1, instruction: "Boil water" }],
         group_ids: ["group-1"],
         categories: ["Italian"],
@@ -252,16 +264,20 @@ describe("recipe-service access patterns", () => {
 
       vi.mocked(assertRecipeAccess).mockResolvedValue(undefined);
       vi.mocked(queryOne).mockResolvedValueOnce(mockRecipe);
-      vi.mocked(queryAll).mockResolvedValueOnce([ // Ingredients query
+      vi.mocked(queryAll).mockResolvedValueOnce([
+        // Ingredients query
         { id: "ing-1", recipe_id: "recipe-1", name: "Pasta", quantity: 200, unit: "g" },
       ]);
-      vi.mocked(queryAll).mockResolvedValueOnce([ // Steps query
+      vi.mocked(queryAll).mockResolvedValueOnce([
+        // Steps query
         { id: "step-1", recipe_id: "recipe-1", step_number: 1, instruction: "Boil water" },
       ]);
-      vi.mocked(queryAll).mockResolvedValueOnce([ // Groups query
+      vi.mocked(queryAll).mockResolvedValueOnce([
+        // Groups query
         { recipe_id: "recipe-1", group_id: "group-1" },
       ]);
-      vi.mocked(queryAll).mockResolvedValueOnce([ // Categories query
+      vi.mocked(queryAll).mockResolvedValueOnce([
+        // Categories query
         { id: "cat-1", recipe_id: "recipe-1", name: "Italian" },
       ]);
 
@@ -269,7 +285,9 @@ describe("recipe-service access patterns", () => {
 
       expect(result).toEqual({
         ...mockRecipe,
-        ingredients: [{ id: "ing-1", recipe_id: "recipe-1", name: "Pasta", quantity: 200, unit: "g" }],
+        ingredients: [
+          { id: "ing-1", recipe_id: "recipe-1", name: "Pasta", quantity: 200, unit: "g" },
+        ],
         steps: [{ id: "step-1", recipe_id: "recipe-1", step_number: 1, instruction: "Boil water" }],
         group_ids: ["group-1"],
         categories: ["Italian"],
@@ -326,7 +344,9 @@ describe("recipe-service access patterns", () => {
       const result = await deleteRecipe(mockEnv, mockUserId, "recipe-123");
 
       expect(result).toBe(true);
-      expect(execute).toHaveBeenCalledWith(mockEnv, "DELETE FROM recipes WHERE id = ?", ["recipe-123"]);
+      expect(execute).toHaveBeenCalledWith(mockEnv, "DELETE FROM recipes WHERE id = ?", [
+        "recipe-123",
+      ]);
     });
 
     it("throws 403 when user is not owner", async () => {

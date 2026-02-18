@@ -59,7 +59,9 @@ describe("access helpers", () => {
     it("throws 403 when user does not share a group with the recipe", async () => {
       vi.mocked(queryOne).mockResolvedValueOnce(null);
 
-      await expect(assertRecipeAccess(mockEnv, mockRecipeId, mockUserId)).rejects.toThrow(HttpError);
+      await expect(assertRecipeAccess(mockEnv, mockRecipeId, mockUserId)).rejects.toThrow(
+        HttpError,
+      );
       await expect(assertRecipeAccess(mockEnv, mockRecipeId, mockUserId)).rejects.toThrow(
         "You do not have permission to access this recipe",
       );

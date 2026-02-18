@@ -35,11 +35,7 @@ export const queryOne = async <T>(
   }
 };
 
-export const execute = async (
-  env: Env,
-  sql: string,
-  params: QueryValue[] = [],
-): Promise<void> => {
+export const execute = async (env: Env, sql: string, params: QueryValue[] = []): Promise<void> => {
   try {
     await env.DB.prepare(sql)
       .bind(...params)

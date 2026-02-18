@@ -41,7 +41,9 @@ export const RegisterPage = () => {
       await registerUser(values);
       setStep(2);
     } catch (error) {
-      accountForm.setError("root", { message: error instanceof Error ? error.message : "Registration failed" });
+      accountForm.setError("root", {
+        message: error instanceof Error ? error.message : "Registration failed",
+      });
     }
   });
 
@@ -54,7 +56,9 @@ export const RegisterPage = () => {
       }
       navigate("/recipes");
     } catch (error) {
-      groupForm.setError("root", { message: error instanceof Error ? error.message : "Could not create group" });
+      groupForm.setError("root", {
+        message: error instanceof Error ? error.message : "Could not create group",
+      });
     }
   });
 
@@ -66,9 +70,13 @@ export const RegisterPage = () => {
       >
         <form aria-label="Create group" className="space-y-3" onSubmit={onGroupSubmit}>
           <div>
-            <label className="mb-1 block text-sm" htmlFor="reg-group-name">Group name</label>
+            <label className="mb-1 block text-sm" htmlFor="reg-group-name">
+              Group name
+            </label>
             <Input
-              aria-describedby={groupForm.formState.errors.name ? "reg-group-name-error" : undefined}
+              aria-describedby={
+                groupForm.formState.errors.name ? "reg-group-name-error" : undefined
+              }
               id="reg-group-name"
               placeholder="e.g. The Smith Family"
               {...groupForm.register("name")}
@@ -81,7 +89,9 @@ export const RegisterPage = () => {
           </div>
 
           {groupForm.formState.errors.root && (
-            <p className="text-xs text-red-600" role="alert">{groupForm.formState.errors.root.message}</p>
+            <p className="text-xs text-red-600" role="alert">
+              {groupForm.formState.errors.root.message}
+            </p>
           )}
           <Button className="w-full" disabled={groupForm.formState.isSubmitting} type="submit">
             {groupForm.formState.isSubmitting ? "Creating..." : "Create group"}
@@ -101,24 +111,65 @@ export const RegisterPage = () => {
     >
       <form aria-label="Create account" className="space-y-3" onSubmit={onAccountSubmit}>
         <div>
-          <label className="mb-1 block text-sm" htmlFor="reg-name">Name</label>
-          <Input aria-describedby={accountForm.formState.errors.name ? "reg-name-error" : undefined} id="reg-name" placeholder="Name" {...accountForm.register("name")} />
-          {accountForm.formState.errors.name && <p className="text-xs text-red-600" id="reg-name-error" role="alert">{accountForm.formState.errors.name.message}</p>}
+          <label className="mb-1 block text-sm" htmlFor="reg-name">
+            Name
+          </label>
+          <Input
+            aria-describedby={accountForm.formState.errors.name ? "reg-name-error" : undefined}
+            id="reg-name"
+            placeholder="Name"
+            {...accountForm.register("name")}
+          />
+          {accountForm.formState.errors.name && (
+            <p className="text-xs text-red-600" id="reg-name-error" role="alert">
+              {accountForm.formState.errors.name.message}
+            </p>
+          )}
         </div>
 
         <div>
-          <label className="mb-1 block text-sm" htmlFor="reg-email">Email</label>
-          <Input aria-describedby={accountForm.formState.errors.email ? "reg-email-error" : undefined} id="reg-email" placeholder="Email" type="email" {...accountForm.register("email")} />
-          {accountForm.formState.errors.email && <p className="text-xs text-red-600" id="reg-email-error" role="alert">{accountForm.formState.errors.email.message}</p>}
+          <label className="mb-1 block text-sm" htmlFor="reg-email">
+            Email
+          </label>
+          <Input
+            aria-describedby={accountForm.formState.errors.email ? "reg-email-error" : undefined}
+            id="reg-email"
+            placeholder="Email"
+            type="email"
+            {...accountForm.register("email")}
+          />
+          {accountForm.formState.errors.email && (
+            <p className="text-xs text-red-600" id="reg-email-error" role="alert">
+              {accountForm.formState.errors.email.message}
+            </p>
+          )}
         </div>
 
         <div>
-          <label className="mb-1 block text-sm" htmlFor="reg-password">Password</label>
-          <Input aria-describedby={accountForm.formState.errors.password ? "reg-password-error" : undefined} id="reg-password" placeholder="Password" type="password" {...accountForm.register("password")} />
-          {accountForm.formState.errors.password && <p className="text-xs text-red-600" id="reg-password-error" role="alert">{accountForm.formState.errors.password.message}</p>}
+          <label className="mb-1 block text-sm" htmlFor="reg-password">
+            Password
+          </label>
+          <Input
+            aria-describedby={
+              accountForm.formState.errors.password ? "reg-password-error" : undefined
+            }
+            id="reg-password"
+            placeholder="Password"
+            type="password"
+            {...accountForm.register("password")}
+          />
+          {accountForm.formState.errors.password && (
+            <p className="text-xs text-red-600" id="reg-password-error" role="alert">
+              {accountForm.formState.errors.password.message}
+            </p>
+          )}
         </div>
 
-        {accountForm.formState.errors.root && <p className="text-xs text-red-600" role="alert">{accountForm.formState.errors.root.message}</p>}
+        {accountForm.formState.errors.root && (
+          <p className="text-xs text-red-600" role="alert">
+            {accountForm.formState.errors.root.message}
+          </p>
+        )}
         <Button className="w-full" disabled={accountForm.formState.isSubmitting} type="submit">
           {accountForm.formState.isSubmitting ? "Creating..." : "Continue"}
         </Button>

@@ -11,18 +11,24 @@ const userSchema = {
 const authResponse = {
   "200": {
     description: "Authenticated user",
-    content: { "application/json": { schema: { type: "object", properties: { user: userSchema } } } },
+    content: {
+      "application/json": { schema: { type: "object", properties: { user: userSchema } } },
+    },
   },
 };
 
 const errorResponse = {
   "400": {
     description: "Bad request",
-    content: { "application/json": { schema: { type: "object", properties: { error: { type: "string" } } } } },
+    content: {
+      "application/json": { schema: { type: "object", properties: { error: { type: "string" } } } },
+    },
   },
   "401": {
     description: "Unauthorized",
-    content: { "application/json": { schema: { type: "object", properties: { error: { type: "string" } } } } },
+    content: {
+      "application/json": { schema: { type: "object", properties: { error: { type: "string" } } } },
+    },
   },
 };
 
@@ -83,7 +89,11 @@ export const authOpenApiSpec = {
         responses: {
           "200": {
             description: "Logged out",
-            content: { "application/json": { schema: { type: "object", properties: { ok: { type: "boolean" } } } } },
+            content: {
+              "application/json": {
+                schema: { type: "object", properties: { ok: { type: "boolean" } } },
+              },
+            },
           },
         },
       },

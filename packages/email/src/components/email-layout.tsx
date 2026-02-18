@@ -1,12 +1,4 @@
-import {
-  Body,
-  Container,
-  Head,
-  Html,
-  Preview,
-  Section,
-  Text,
-} from "@react-email/components";
+import { Body, Container, Head, Html, Preview, Section, Text } from "@react-email/components";
 import { PropsWithChildren } from "react";
 
 interface EmailLayoutProps extends PropsWithChildren {

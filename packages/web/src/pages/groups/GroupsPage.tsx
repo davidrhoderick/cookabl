@@ -20,7 +20,9 @@ interface InviteValues {
 export const GroupsPage = () => {
   const { activeGroupId, setActiveGroupId } = useGroup();
   const { data, refetch } = useQuery<{ groups: GroupView[] }>(GROUPS_QUERY);
-  const { data: usersData } = useQuery<{ users: { id: string; email: string; name: string }[] }>(USERS_QUERY);
+  const { data: usersData } = useQuery<{ users: { id: string; email: string; name: string }[] }>(
+    USERS_QUERY,
+  );
 
   const [createGroup] = useMutation(CREATE_GROUP_MUTATION);
   const [inviteUser] = useMutation(INVITE_USER_MUTATION);
@@ -122,7 +124,9 @@ export const GroupsPage = () => {
         <h3 className="mb-2 mt-5 text-sm font-medium">Members in your groups</h3>
         <ul className="space-y-1 text-sm text-[var(--muted)]">
           {(usersData?.users ?? []).map((user) => (
-            <li key={user.id}>{user.name} · {user.email}</li>
+            <li key={user.id}>
+              {user.name} · {user.email}
+            </li>
           ))}
         </ul>
       </Card>

@@ -44,7 +44,9 @@ export const getCurrentUser = async (env: Env, request: Request): Promise<AuthUs
     return null;
   }
 
-  const user = await queryOne<UserRow>(env, "SELECT id, email, name FROM users WHERE id = ?", [session.user_id]);
+  const user = await queryOne<UserRow>(env, "SELECT id, email, name FROM users WHERE id = ?", [
+    session.user_id,
+  ]);
   if (!user) {
     return null;
   }

@@ -45,18 +45,46 @@ export const LoginPage = () => {
     >
       <form aria-label="Sign in" className="space-y-3" onSubmit={handleSubmit(onSubmit)}>
         <div>
-          <label className="mb-1 block text-sm" htmlFor="login-email">Email</label>
-          <Input aria-describedby={errors.email ? "login-email-error" : undefined} id="login-email" placeholder="Email" type="email" {...register("email")} />
-          {errors.email && <p className="text-xs text-red-600" id="login-email-error" role="alert">{errors.email.message}</p>}
+          <label className="mb-1 block text-sm" htmlFor="login-email">
+            Email
+          </label>
+          <Input
+            aria-describedby={errors.email ? "login-email-error" : undefined}
+            id="login-email"
+            placeholder="Email"
+            type="email"
+            {...register("email")}
+          />
+          {errors.email && (
+            <p className="text-xs text-red-600" id="login-email-error" role="alert">
+              {errors.email.message}
+            </p>
+          )}
         </div>
 
         <div>
-          <label className="mb-1 block text-sm" htmlFor="login-password">Password</label>
-          <Input aria-describedby={errors.password ? "login-password-error" : undefined} id="login-password" placeholder="Password" type="password" {...register("password")} />
-          {errors.password && <p className="text-xs text-red-600" id="login-password-error" role="alert">{errors.password.message}</p>}
+          <label className="mb-1 block text-sm" htmlFor="login-password">
+            Password
+          </label>
+          <Input
+            aria-describedby={errors.password ? "login-password-error" : undefined}
+            id="login-password"
+            placeholder="Password"
+            type="password"
+            {...register("password")}
+          />
+          {errors.password && (
+            <p className="text-xs text-red-600" id="login-password-error" role="alert">
+              {errors.password.message}
+            </p>
+          )}
         </div>
 
-        {errors.root && <p className="text-xs text-red-600" role="alert">{errors.root.message}</p>}
+        {errors.root && (
+          <p className="text-xs text-red-600" role="alert">
+            {errors.root.message}
+          </p>
+        )}
         <Button className="w-full" disabled={isSubmitting} type="submit">
           {isSubmitting ? "Signing in..." : "Sign in"}
         </Button>

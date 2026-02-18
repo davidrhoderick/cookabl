@@ -4,7 +4,9 @@ import { useTheme } from "../../hooks/useTheme";
 
 const navClass = ({ isActive }: { isActive: boolean }) =>
   `rounded-full px-3 py-1.5 text-sm transition ${
-    isActive ? "bg-[var(--accent)] text-[var(--bg)]" : "text-[var(--muted)] hover:text-[var(--text)]"
+    isActive
+      ? "bg-[var(--accent)] text-[var(--bg)]"
+      : "text-[var(--muted)] hover:text-[var(--text)]"
   }`;
 
 export const AppShell = () => {

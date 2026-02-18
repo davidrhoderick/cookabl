@@ -72,11 +72,7 @@ export const SearchResults = ({
         <h2 className="text-lg font-semibold">
           {sortedRecipes.length} recipe{sortedRecipes.length !== 1 ? "s" : ""} found
         </h2>
-        {searchQuery && (
-          <p className="text-sm text-[var(--muted)]">
-            for "{searchQuery}"
-          </p>
-        )}
+        {searchQuery && <p className="text-sm text-[var(--muted)]">for "{searchQuery}"</p>}
       </div>
 
       <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
@@ -93,7 +89,7 @@ export const SearchResults = ({
       </div>
 
       {/* Show search ranking info if available */}
-      {sortedRecipes.some(recipe => recipe.rank !== undefined) && (
+      {sortedRecipes.some((recipe) => recipe.rank !== undefined) && (
         <div className="mt-4 p-3 bg-[var(--accent)]/30 rounded-lg">
           <p className="text-xs text-[var(--muted)]">
             Results are ranked by relevance to your search query.

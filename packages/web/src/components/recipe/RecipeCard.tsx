@@ -1,8 +1,4 @@
-import {
-  gramsToOunces,
-  millilitersToFluidOunces,
-  roundTo,
-} from "@cookabl/shared";
+import { gramsToOunces, millilitersToFluidOunces, roundTo } from "@cookabl/shared";
 import { Button } from "../ui/Button";
 import { Card } from "../ui/Card";
 import { RecipeView } from "../../types";
@@ -44,43 +40,59 @@ export const RecipeCard = ({
   return (
     <Card>
       <article aria-label={recipe.name}>
-      <div className="mb-3 flex items-start justify-between gap-3">
-        <div>
-          <h3 className="font-semibold">{recipe.name}</h3>
-          <p className="text-sm text-[var(--muted)]">{recipe.description || "No description"}</p>
-          {recipe.categories.length > 0 && (
-            <div className="mt-1 flex flex-wrap gap-1">
-              {recipe.categories.map((category) => (
-                <span
-                  key={category}
-                  className="inline-block rounded-full bg-[var(--line)] px-2 py-0.5 text-xs text-[var(--muted)]"
-                >
-                  {category}
-                </span>
-              ))}
-            </div>
-          )}
+        <div className="mb-3 flex items-start justify-between gap-3">
+          <div>
+            <h3 className="font-semibold">{recipe.name}</h3>
+            <p className="text-sm text-[var(--muted)]">{recipe.description || "No description"}</p>
+            {recipe.categories.length > 0 && (
+              <div className="mt-1 flex flex-wrap gap-1">
+                {recipe.categories.map((category) => (
+                  <span
+                    key={category}
+                    className="inline-block rounded-full bg-[var(--line)] px-2 py-0.5 text-xs text-[var(--muted)]"
+                  >
+                    {category}
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+          <div className="flex gap-2">
+            <Button
+              aria-label={`Edit ${recipe.name}`}
+              onClick={() => onEdit(recipe)}
+              type="button"
+              variant="ghost"
+            >
+              Edit
+            </Button>
+            <Button
+              aria-label={`Delete ${recipe.name}`}
+              onClick={() => onDelete(recipe.id)}
+              type="button"
+              variant="ghost"
+            >
+              Delete
+            </Button>
+          </div>
         </div>
-        <div className="flex gap-2">
-          <Button aria-label={`Edit ${recipe.name}`} onClick={() => onEdit(recipe)} type="button" variant="ghost">
-            Edit
-          </Button>
-          <Button aria-label={`Delete ${recipe.name}`} onClick={() => onDelete(recipe.id)} type="button" variant="ghost">
-            Delete
-          </Button>
-        </div>
-      </div>
 
-      <p className="mb-2 text-xs uppercase tracking-wide text-[var(--muted)]">Ingredients</p>
-      <ul className="mb-3 list-disc space-y-1 pl-5 text-sm">
-        {recipe.ingredients.slice(0, 3).map((ingredient) => (
-          <li key={ingredient.id}>{formatIngredient(ingredient, unitSystem)}</li>
-        ))}
-      </ul>
+        <p className="mb-2 text-xs uppercase tracking-wide text-[var(--muted)]">Ingredients</p>
+        <ul className="mb-3 list-disc space-y-1 pl-5 text-sm">
+          {recipe.ingredients.slice(0, 3).map((ingredient) => (
+            <li key={ingredient.id}>{formatIngredient(ingredient, unitSystem)}</li>
+          ))}
+        </ul>
 
-      <Button aria-label={`View comments and sharing for ${recipe.name}`} className="w-full" onClick={() => onOpenDetails(recipe)} type="button" variant="ghost">
-        Comments & sharing
-      </Button>
+        <Button
+          aria-label={`View comments and sharing for ${recipe.name}`}
+          className="w-full"
+          onClick={() => onOpenDetails(recipe)}
+          type="button"
+          variant="ghost"
+        >
+          Comments & sharing
+        </Button>
       </article>
     </Card>
   );

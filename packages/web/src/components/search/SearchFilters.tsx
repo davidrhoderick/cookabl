@@ -44,7 +44,7 @@ export const SearchFilters = ({
   };
 
   const handleCategoryRemove = (category: string) => {
-    const newCategories = categories.filter(c => c !== category);
+    const newCategories = categories.filter((c) => c !== category);
     setCategories(newCategories);
     onFiltersChange({
       categories: newCategories,
@@ -55,7 +55,7 @@ export const SearchFilters = ({
 
   const handleGroupToggle = (groupId: string) => {
     const newGroups = selectedGroups.includes(groupId)
-      ? selectedGroups.filter(id => id !== groupId)
+      ? selectedGroups.filter((id) => id !== groupId)
       : [...selectedGroups, groupId];
     setSelectedGroups(newGroups);
     onFiltersChange({
@@ -89,7 +89,7 @@ export const SearchFilters = ({
           Categories
         </label>
         <div className="flex flex-wrap gap-2 mb-2">
-          {categories.map(category => (
+          {categories.map((category) => (
             <span
               key={category}
               className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-[var(--accent)] text-[var(--accent-foreground)]"
@@ -127,9 +127,7 @@ export const SearchFilters = ({
       {/* Groups Filter */}
       {groups.length > 0 && (
         <div>
-          <label className="block text-sm font-medium text-[var(--foreground)] mb-2">
-            Groups
-          </label>
+          <label className="block text-sm font-medium text-[var(--foreground)] mb-2">Groups</label>
           <div className="space-y-2 max-h-32 overflow-y-auto">
             {groups.map((group: any) => (
               <label

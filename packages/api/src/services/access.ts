@@ -6,7 +6,11 @@ import { HttpError } from "../lib/http-error";
  * Verifies that a user belongs to a given group.
  * Throws HttpError(403) if the user is not a member.
  */
-export const assertGroupMember = async (env: Env, userId: string, groupId: string): Promise<void> => {
+export const assertGroupMember = async (
+  env: Env,
+  userId: string,
+  groupId: string,
+): Promise<void> => {
   const membership = await queryOne<{ user_id: string }>(
     env,
     "SELECT user_id FROM group_members WHERE group_id = ? AND user_id = ?",
@@ -22,7 +26,11 @@ export const assertGroupMember = async (env: Env, userId: string, groupId: strin
  * Verifies that a user can access a recipe by checking if they share a group with it.
  * Throws HttpError(403) if no shared group exists between the user and the recipe.
  */
-export const assertRecipeAccess = async (env: Env, recipeId: string, userId: string): Promise<void> => {
+export const assertRecipeAccess = async (
+  env: Env,
+  recipeId: string,
+  userId: string,
+): Promise<void> => {
   const sharedGroup = await queryOne<{ recipe_id: string }>(
     env,
     `SELECT rg.recipe_id

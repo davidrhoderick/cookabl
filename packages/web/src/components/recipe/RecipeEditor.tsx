@@ -87,7 +87,10 @@ export const RecipeEditor = ({ groups, selectedRecipe, onSubmit }: RecipeEditorP
 
       <Input placeholder="Categories (comma-separated)" {...register("categoriesText")} />
 
-      <select className="w-full rounded-xl border border-[var(--line)] bg-transparent px-3 py-2" {...register("groupId")}>
+      <select
+        className="w-full rounded-xl border border-[var(--line)] bg-transparent px-3 py-2"
+        {...register("groupId")}
+      >
         {groups.map((group) => (
           <option key={group.id} value={group.id}>
             {group.name}

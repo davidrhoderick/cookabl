@@ -8,10 +8,10 @@ interface SearchBarProps {
   className?: string;
 }
 
-export const SearchBar = ({ 
-  onSearch, 
-  placeholder = "Search recipes...", 
-  className = "" 
+export const SearchBar = ({
+  onSearch,
+  placeholder = "Search recipes...",
+  className = "",
 }: SearchBarProps) => {
   const [query, setQuery] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -25,7 +25,7 @@ export const SearchBar = ({
       variables: { partial: query },
       skip: query.length < 2,
       fetchPolicy: "cache-first",
-    }
+    },
   );
 
   const suggestions = suggestionsData?.searchSuggestions || [];
@@ -52,13 +52,11 @@ export const SearchBar = ({
     switch (e.key) {
       case "ArrowDown":
         e.preventDefault();
-        setSelectedSuggestionIndex(prev => 
-          prev < suggestions.length - 1 ? prev + 1 : prev
-        );
+        setSelectedSuggestionIndex((prev) => (prev < suggestions.length - 1 ? prev + 1 : prev));
         break;
       case "ArrowUp":
         e.preventDefault();
-        setSelectedSuggestionIndex(prev => prev > 0 ? prev - 1 : -1);
+        setSelectedSuggestionIndex((prev) => (prev > 0 ? prev - 1 : -1));
         break;
       case "Enter":
         e.preventDefault();
@@ -88,7 +86,7 @@ export const SearchBar = ({
 
   const handleClickOutside = (e: MouseEvent) => {
     if (
-      inputRef.current && 
+      inputRef.current &&
       !inputRef.current.contains(e.target as Node) &&
       suggestionsRef.current &&
       !suggestionsRef.current.contains(e.target as Node)
@@ -105,7 +103,9 @@ export const SearchBar = ({
 
   useEffect(() => {
     if (selectedSuggestionIndex >= 0 && suggestionsRef.current) {
-      const selectedElement = suggestionsRef.current.children[selectedSuggestionIndex] as HTMLElement;
+      const selectedElement = suggestionsRef.current.children[
+        selectedSuggestionIndex
+      ] as HTMLElement;
       if (selectedElement) {
         selectedElement.scrollIntoView({ block: "nearest" });
       }

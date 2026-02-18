@@ -43,17 +43,34 @@ export const AcceptInvitationPage = () => {
       footerLinkText="Login"
       footerHref="/login"
     >
-      {!token && <p className="mb-3 text-sm text-red-600" role="alert">Invitation token is missing.</p>}
+      {!token && (
+        <p className="mb-3 text-sm text-red-600" role="alert">
+          Invitation token is missing.
+        </p>
+      )}
       <form aria-label="Accept invitation" className="space-y-3" onSubmit={handleSubmit(onSubmit)}>
         <div>
-          <label className="mb-1 block text-sm" htmlFor="accept-name">Name</label>
+          <label className="mb-1 block text-sm" htmlFor="accept-name">
+            Name
+          </label>
           <Input id="accept-name" placeholder="Name" {...register("name")} />
         </div>
         <div>
-          <label className="mb-1 block text-sm" htmlFor="accept-password">Password</label>
-          <Input id="accept-password" placeholder="Password" type="password" {...register("password")} />
+          <label className="mb-1 block text-sm" htmlFor="accept-password">
+            Password
+          </label>
+          <Input
+            id="accept-password"
+            placeholder="Password"
+            type="password"
+            {...register("password")}
+          />
         </div>
-        {errors.root && <p className="text-xs text-red-600" role="alert">{errors.root.message}</p>}
+        {errors.root && (
+          <p className="text-xs text-red-600" role="alert">
+            {errors.root.message}
+          </p>
+        )}
         <Button className="w-full" disabled={isSubmitting || !token} type="submit">
           {isSubmitting ? "Joining..." : "Join group"}
         </Button>

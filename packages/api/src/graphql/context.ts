@@ -7,10 +7,7 @@ export interface GraphQLContext {
   user: AuthUser | null;
 }
 
-export const createContext = async (
-  env: Env,
-  request: Request,
-): Promise<GraphQLContext> => {
+export const createContext = async (env: Env, request: Request): Promise<GraphQLContext> => {
   const user = await getCurrentUser(env, request);
   return {
     env,

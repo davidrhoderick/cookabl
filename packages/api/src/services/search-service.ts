@@ -45,14 +45,9 @@ export const searchRecipes = async (
   env: Env,
   userId: string,
   query: string,
-  filters: SearchFilters = {}
+  filters: SearchFilters = {},
 ): Promise<SearchResult[]> => {
-  const {
-    categories = [],
-    groupIds = [],
-    maxResults = 20,
-    offset = 0,
-  } = filters;
+  const { categories = [], groupIds = [], maxResults = 20, offset = 0 } = filters;
 
   // Validate group access if specific groups are requested
   if (groupIds.length > 0) {
@@ -90,7 +85,12 @@ export const searchRecipes = async (
 
   // Add category filtering if specified
   if (categories.length > 0) {
-    const categoryConditions = categories.map(() => "EXISTS (SELECT 1 FROM recipe_categories rc WHERE rc.recipe_id = r.id AND rc.name = ?)").join(" OR ");
+    const categoryConditions = categories
+      .map(
+        () =>
+          "EXISTS (SELECT 1 FROM recipe_categories rc WHERE rc.recipe_id = r.id AND rc.name = ?)",
+      )
+      .join(" OR ");
     sql += ` AND (${categoryConditions})`;
     params.push(...categories);
   }
@@ -118,7 +118,7 @@ export const searchRecipes = async (
   }
 
   // Load full recipe details for search results
-  const recipeRows = searchResults.map(result => ({
+  const recipeRows = searchResults.map((result) => ({
     id: result.id,
     name: result.name,
     description: result.description,
@@ -155,7 +155,7 @@ export const getSearchSuggestions = async (
   env: Env,
   userId: string,
   partialQuery: string,
-  maxSuggestions: number = 5
+  maxSuggestions: number = 5,
 ): Promise<string[]> => {
   if (partialQuery.trim().length < 2) {
     return [];
@@ -187,10 +187,17 @@ export const getSearchSuggestions = async (
 
   const likePattern = `%${partialQuery}%`;
   const suggestions = await queryAll<{ suggestion: string }>(env, sql, [
-    likePattern, likePattern, partialQuery, userId, likePattern, likePattern, likePattern, maxSuggestions
+    likePattern,
+    likePattern,
+    partialQuery,
+    userId,
+    likePattern,
+    likePattern,
+    likePattern,
+    maxSuggestions,
   ]);
 
-  return suggestions.map(s => s.suggestion).filter(Boolean);
+  return suggestions.map((s) => s.suggestion).filter(Boolean);
 };
 
 /**
@@ -201,7 +208,7 @@ export const getSimilarRecipes = async (
   env: Env,
   userId: string,
   recipeId: string,
-  maxResults: number = 5
+  maxResults: number = 5,
 ): Promise<SearchResult[]> => {
   // First verify access to the reference recipe
   const recipeCheck = await queryAll<{ recipe_id: string }>(
@@ -210,7 +217,7 @@ export const getSimilarRecipes = async (
      FROM recipe_groups rg
      INNER JOIN group_members gm ON gm.group_id = rg.group_id
      WHERE rg.recipe_id = ? AND gm.user_id = ?`,
-    [recipeId, userId]
+    [recipeId, userId],
   );
 
   if (recipeCheck.length === 0) {
@@ -218,28 +225,26 @@ export const getSimilarRecipes = async (
   }
 
   // Get the recipe content for similarity search
-  const recipeContent = await queryAll<{ 
+  const recipeContent = await queryAll<{
     name: string;
     ingredients: string;
     categories: string;
-  }>(
-    env,
-    `SELECT name, ingredients, categories FROM recipe_search_fts WHERE recipe_id = ?`,
-    [recipeId]
-  );
+  }>(env, `SELECT name, ingredients, categories FROM recipe_search_fts WHERE recipe_id = ?`, [
+    recipeId,
+  ]);
 
   if (recipeContent.length === 0) {
     return [];
   }
 
   const content = recipeContent[0];
-  
+
   // Build similarity query using key terms from the recipe
   const searchTerms = [
     content.name,
-    ...content.ingredients.split(' ').filter(word => word.length > 3),
-    ...content.categories.split(' ').filter(word => word.length > 3),
-  ].join(' ');
+    ...content.ingredients.split(" ").filter((word) => word.length > 3),
+    ...content.categories.split(" ").filter((word) => word.length > 3),
+  ].join(" ");
 
   const sql = `
     SELECT 
@@ -278,7 +283,7 @@ export const getSimilarRecipes = async (
   }
 
   // Load full recipe details
-  const recipeRows = similarResults.map(result => ({
+  const recipeRows = similarResults.map((result) => ({
     id: result.id,
     name: result.name,
     description: result.description,
@@ -313,7 +318,7 @@ export const getSimilarRecipes = async (
 export const getPopularSearchTerms = async (
   env: Env,
   userId: string,
-  maxTerms: number = 10
+  maxTerms: number = 10,
 ): Promise<Array<{ term: string; count: number }>> => {
   // This is a simplified version - in production you'd want to track actual searches
   // For now, we'll return frequently appearing ingredients and categories from user's groups

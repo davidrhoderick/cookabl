@@ -39,7 +39,11 @@ interface CategoryRow {
   name: string;
 }
 
-export const assertOwnership = async (env: Env, recipeId: string, userId: string): Promise<void> => {
+export const assertOwnership = async (
+  env: Env,
+  recipeId: string,
+  userId: string,
+): Promise<void> => {
   const owner = await queryOne<{ created_by: string }>(
     env,
     "SELECT created_by FROM recipes WHERE id = ?",
@@ -89,9 +93,7 @@ const loadRecipeDetails = async (env: Env, rows: RecipeRow[]) => {
     group_ids: recipeGroups
       .filter((groupRef) => groupRef.recipe_id === row.id)
       .map((groupRef) => groupRef.group_id),
-    categories: categories
-      .filter((cat) => cat.recipe_id === row.id)
-      .map((cat) => cat.name),
+    categories: categories.filter((cat) => cat.recipe_id === row.id).map((cat) => cat.name),
   }));
 };
 
@@ -116,7 +118,7 @@ export const getRecipeById = async (env: Env, recipeId: string, userId?: string)
   if (userId) {
     await assertRecipeAccess(env, recipeId, userId);
   }
-  
+
   const recipe = await queryOne<RecipeRow>(
     env,
     "SELECT id, name, description, image_url, created_by, created_at, updated_at FROM recipes WHERE id = ?",
@@ -131,7 +133,11 @@ export const getRecipeById = async (env: Env, recipeId: string, userId?: string)
   return resolved ?? null;
 };
 
-export const deleteRecipe = async (env: Env, userId: string, recipeId: string): Promise<boolean> => {
+export const deleteRecipe = async (
+  env: Env,
+  userId: string,
+  recipeId: string,
+): Promise<boolean> => {
   await assertOwnership(env, recipeId, userId);
 
   await execute(env, "DELETE FROM recipes WHERE id = ?", [recipeId]);
@@ -171,7 +177,13 @@ export const putRecipe = async (env: Env, userId: string, input: PutRecipeInput)
     await execute(
       env,
       "INSERT INTO recipe_ingredients (id, recipe_id, name, quantity, unit) VALUES (?, ?, ?, ?, ?)",
-      [ingredient.id ?? createId(), recipeId, ingredient.name, ingredient.quantity, ingredient.unit],
+      [
+        ingredient.id ?? createId(),
+        recipeId,
+        ingredient.name,
+        ingredient.quantity,
+        ingredient.unit,
+      ],
     );
   }
 
@@ -192,11 +204,11 @@ export const putRecipe = async (env: Env, userId: string, input: PutRecipeInput)
   }
 
   for (const category of input.categories) {
-    await execute(
-      env,
-      "INSERT INTO recipe_categories (id, recipe_id, name) VALUES (?, ?, ?)",
-      [createId(), recipeId, category],
-    );
+    await execute(env, "INSERT INTO recipe_categories (id, recipe_id, name) VALUES (?, ?, ?)", [
+      createId(),
+      recipeId,
+      category,
+    ]);
   }
 
   const updated = await queryOne<RecipeRow>(

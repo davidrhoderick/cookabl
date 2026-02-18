@@ -1,9 +1,4 @@
-import {
-  acceptInvitationSchema,
-  inviteSchema,
-  loginSchema,
-  registerSchema,
-} from "@cookabl/shared";
+import { acceptInvitationSchema, inviteSchema, loginSchema, registerSchema } from "@cookabl/shared";
 import { Hono } from "hono";
 import {
   buildClearSessionCookie,

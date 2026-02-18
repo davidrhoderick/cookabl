@@ -21,11 +21,16 @@ export const AuthPanel = ({
     <div className="mx-auto flex min-h-screen w-full max-w-md items-center px-4 py-8">
       <div className="w-full rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-6">
         <h1 className="mb-1 text-2xl font-semibold">{title}</h1>
-        <p className="mb-6 text-sm text-[var(--muted)]" role="doc-subtitle">{subtitle}</p>
+        <p className="mb-6 text-sm text-[var(--muted)]" role="doc-subtitle">
+          {subtitle}
+        </p>
         {children}
         {footerText && footerLinkText && footerHref && (
           <p className="mt-5 text-sm text-[var(--muted)]">
-            {footerText} <Link className="underline" to={footerHref}>{footerLinkText}</Link>
+            {footerText}{" "}
+            <Link className="underline" to={footerHref}>
+              {footerLinkText}
+            </Link>
           </p>
         )}
       </div>

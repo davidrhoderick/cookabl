@@ -11,7 +11,10 @@ interface D1Database {
 }
 
 interface R2Bucket {
-  put(key: string, value: ArrayBuffer | ArrayBufferView | ReadableStream | string): Promise<unknown>;
+  put(
+    key: string,
+    value: ArrayBuffer | ArrayBufferView | ReadableStream | string,
+  ): Promise<unknown>;
 }
 
 export {};
