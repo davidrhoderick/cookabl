@@ -14,10 +14,10 @@
     "deploy": "wrangler deploy"
   },
   "dependencies": {
+    "@apollo/server": "^4.11.0",
+    "@as-integrations/cloudflare-workers": "^1.1.1",
     "@cookabl/email": "file:../email",
     "@cookabl/shared": "file:../shared",
-    "@as-integrations/cloudflare-workers": "^1.1.1",
-    "@apollo/server": "^4.11.0",
     "drizzle-orm": "^0.38.2",
     "graphql": "^16.10.0",
     "hono": "^4.6.15",
@@ -29,6 +29,6 @@
     "@cloudflare/workers-types": "^4.20250214.0",
     "drizzle-kit": "^0.30.4",
     "typescript": "^5.7.3",
-    "wrangler": "^3.107.3"
+    "wrangler": "^4.66.0"
   }
 }
